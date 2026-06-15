@@ -181,19 +181,19 @@ Benefits:
 
 
 
-screenshots/home.png
+![Home Page](screenshots/home.png)
 
 
 ### Chat Interface
 
 
-screenshots/chat.png
+![Chat Interface](screenshots/chat.png)
 
 
 ### Answer Generation
 
 
-screenshots/answer.png
+![Answer Generation](screenshots/answer.png)
 
 
 ---
