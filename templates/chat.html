@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>DocMind AI Chat</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+body{
+    min-height:100vh;
+    background:linear-gradient(135deg,#667eea,#764ba2);
+    color:white;
+    overflow-x:hidden;
+}
+
+.container{
+    width:95%;
+    max-width:1400px;
+    margin:auto;
+    padding:25px 0;
+}
+
+.header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    background:rgba(255,255,255,.12);
+    backdrop-filter:blur(15px);
+
+    padding:20px 30px;
+    border-radius:20px;
+
+    margin-bottom:25px;
+}
+
+.logo{
+    font-size:1.8rem;
+    font-weight:700;
+}
+
+.new-doc{
+    text-decoration:none;
+    color:white;
+    background:#ef4444;
+
+    padding:12px 20px;
+    border-radius:12px;
+
+    font-weight:600;
+    transition:.3s;
+}
+
+.new-doc:hover{
+    background:#dc2626;
+}
+
+.status-card{
+
+    background:linear-gradient(
+    135deg,
+    #10b981,
+    #059669
+    );
+
+    padding:20px 25px;
+    border-radius:18px;
+
+    margin-bottom:25px;
+
+    box-shadow:0 10px 25px rgba(0,0,0,.15);
+}
+
+.status-card h3{
+    margin-bottom:8px;
+}
+
+.main-grid{
+    display:grid;
+    grid-template-columns:2fr 1fr;
+    gap:25px;
+}
+
+.chat-section,
+.sidebar{
+
+    background:rgba(255,255,255,.12);
+
+    backdrop-filter:blur(15px);
+
+    border-radius:25px;
+
+    padding:25px;
+}
+
+.chat-form textarea{
+
+    width:100%;
+    height:90px;
+
+    border:none;
+    outline:none;
+
+    border-radius:18px;
+
+    padding:18px;
+
+    resize:none;
+
+    font-size:15px;
+
+    box-shadow:0 10px 20px rgba(0,0,0,.08);
+}
+
+.send-btn{
+
+    margin-top:15px;
+
+    width:100%;
+
+    border:none;
+
+    padding:15px;
+
+    border-radius:15px;
+
+    background:#ffd166;
+
+    color:#222;
+
+    font-weight:600;
+
+    cursor:pointer;
+
+    transition:.3s;
+}
+
+.send-btn:hover{
+    transform:translateY(-2px);
+}
+
+.question-card{
+
+    background:#4f46e5;
+
+    padding:20px;
+
+    border-radius:20px;
+
+    margin-top:25px;
+
+    box-shadow:0 10px 20px rgba(0,0,0,.15);
+}
+
+.question-card h3{
+    margin-bottom:10px;
+}
+
+.question-text{
+    line-height:1.8;
+}
+
+.answer-card{
+
+    margin-top:20px;
+
+    background:white;
+
+    color:#111827;
+
+    border-radius:20px;
+
+    padding:25px;
+
+    box-shadow:0 15px 30px rgba(0,0,0,.15);
+}
+
+.answer-card h3{
+    margin-bottom:15px;
+}
+
+.answer-text{
+
+    color:#334155;
+
+    line-height:1.9;
+
+    white-space:pre-wrap;
+}
+
+.sidebar h2{
+    margin-bottom:20px;
+}
+
+.source{
+
+    margin-bottom:15px;
+
+    background:rgba(255,255,255,.08);
+
+    border-radius:15px;
+
+    padding:12px;
+
+    transition:.3s;
+}
+
+.source:hover{
+    transform:translateY(-2px);
+}
+
+.source summary{
+    cursor:pointer;
+    font-weight:600;
+}
+
+.source-content{
+
+    margin-top:12px;
+
+    color:#e2e8f0;
+
+    white-space:pre-wrap;
+
+    line-height:1.7;
+}
+
+.empty-state{
+
+    text-align:center;
+
+    padding:60px 20px;
+
+    color:#e2e8f0;
+}
+
+.empty-state h2{
+    margin-bottom:15px;
+}
+
+.example-list{
+    margin-top:20px;
+}
+
+.example-list p{
+    margin-bottom:10px;
+}
+
+@media(max-width:1000px){
+
+.main-grid{
+    grid-template-columns:1fr;
+}
+
+.header{
+    flex-direction:column;
+    gap:15px;
+}
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+```
+<div class="header">
+
+    <div class="logo">
+        📚 DocMind AI
+    </div>
+
+    <a href="/" class="new-doc">
+        Upload New PDF
+    </a>
+
+</div>
+
+<div class="status-card">
+
+    <h3>📄 Document Ready</h3>
+
+    <p>
+        Your PDF has been processed successfully and is ready for AI-powered retrieval.
+    </p>
+
+</div>
+
+<div class="main-grid">
+
+    <div class="chat-section">
+
+        <form action="/ask" method="POST" class="chat-form">
+
+            <textarea
+                name="query"
+                placeholder="Ask anything about your uploaded document..."
+                required></textarea>
+
+            <button type="submit" class="send-btn">
+                Ask Question
+            </button>
+
+        </form>
+
+        {% if query %}
+
+        <div class="question-card">
+
+            <h3>👤 Your Question</h3>
+
+            <div class="question-text">
+                {{ query }}
+            </div>
+
+        </div>
+
+        {% endif %}
+
+        {% if answer %}
+
+        <div class="answer-card">
+
+            <h3>🤖 AI Assistant</h3>
+
+            <div class="answer-text">
+                {{ answer }}
+            </div>
+
+        </div>
+
+        {% else %}
+
+        <div class="empty-state">
+
+            <h2>Start Asking Questions</h2>
+
+            <p>
+                Your document has been indexed successfully.
+            </p>
+
+            <div class="example-list">
+
+                <p>📌 Summarize this document</p>
+                <p>📌 What are the key concepts?</p>
+                <p>📌 Explain chapter 1</p>
+                <p>📌 What conclusions were drawn?</p>
+
+            </div>
+
+        </div>
+
+        {% endif %}
+
+    </div>
+
+    <div class="sidebar">
+
+        <h2>📖 Retrieved Sources</h2>
+
+        {% if sources %}
+
+            {% for source in sources %}
+
+            <details class="source">
+
+                <summary>
+                    Source {{ loop.index }}
+                </summary>
+
+                <div class="source-content">
+```
+
+{{ source }} </div>
+
+```
+            </details>
+
+            {% endfor %}
+
+        {% else %}
+
+            <p>
+                Sources will appear here after asking a question.
+            </p>
+
+        {% endif %}
+
+    </div>
+
+</div>
+```
+
+</div>
+
+</body>
+
+</html>
