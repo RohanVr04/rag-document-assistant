@@ -91,14 +91,18 @@ docmind-ai-rag/
 ├── app.py
 ├── rag_utils.py
 ├── requirements.txt
-├── .env
-├── .gitignore
+├── README.md
 │
+├── screenshots/
+│   ├── home.png
+│   ├── chat.png
+│   └── answer.png
+|
 ├── templates/
-│   ├── home.html
-│   └── chat.html
-│
-└── static/
+    ├── home.html
+    └── chat.html
+
+
 ```
 
 ---
