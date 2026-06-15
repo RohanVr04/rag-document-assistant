@@ -1,0 +1,8 @@
+flask
+pypdf2
+sentence-transformers
+faiss-cpu
+google-genai
+python-dotenv
+numpy
+langchain-text-splitters
