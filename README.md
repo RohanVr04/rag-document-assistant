@@ -207,9 +207,9 @@ Benefits:
 ### Clone Repository
 
 ```bash
-git clone https://github.com/yourusername/docmind-ai-rag.git
+git clone https://github.com/RohanVr04/rag-document-assistant.git
 
-cd docmind-ai-rag
+cd rag-document-assistant
 ```
 
 ### Create Virtual Environment
